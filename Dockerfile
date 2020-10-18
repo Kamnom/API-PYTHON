@@ -1,17 +1,19 @@
 FROM postgres:alpine
 
-RUN apk add --no-cache python3-dev \
-    && pip3 install --upgrade pip
+RUN apk add python3-dev
+RUN apk add py3-pip && pip3 install --upgrade pip
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
 
+RUN pip3 install psycopg2-binary
 
 WORKDIR /api
 
 COPY . /api
 
-RUN pip3 --no-cache-dir install -r requirements.txt
-
-RUN --name postgresql -e POSTGRES_PASSWORD=123456789 -d -p 54321:54321 postgres:alpine
+RUN pip3  install -r requirements.txt
 
 
 
 CMD ["python3","source/api.py"]
+
+

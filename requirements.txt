@@ -2,7 +2,6 @@ appdirs==1.4.4
 astroid==2.4.2
 click==7.1.2
 colorama==0.4.3
-distlib==0.3.1
 filelock==3.0.12
 Flask==1.1.2
 flask-marshmallow==0.14.0
@@ -17,6 +16,7 @@ marshmallow==3.8.0
 marshmallow-sqlalchemy==0.23.1
 mccabe==0.6.1
 psycopg2==2.8.6
+wheel==0.35.1
 PyJWT==1.7.1
 pylint==2.5.3
 six==1.15.0
@@ -25,3 +25,4 @@ toml==0.10.1
 virtualenv==20.0.35
 Werkzeug==1.0.1
 wrapt==1.12.1
+distlib==0.3.0

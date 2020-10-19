@@ -10,7 +10,7 @@ import datetime
 app = Flask (__name__)
 
 app.config['SECRET_KEY'] = 'absolutekey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:123456789@localhost:5432/RecursosHumanos'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:123456789@db:5432/RecursosHumanos'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 db = SQLAlchemy(app)

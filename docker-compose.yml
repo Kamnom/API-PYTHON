@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 123456789
+      POSTGRES_USER: postgres
+      
+    ports:
+        - 5432:5432
+    volumes: 
+        - ./db:/db-container
+    run:
+        
+    ##command: su postgres
+    ##command: createdb postgres
+    ##command: createdb RecursosHumanos
+    ##command: pg_restore --superuser=postgres -d RecursosHumanos ./db-container/database.sql
+    ##command: psql -U postgres -d RecursosHumanos < ./db-container/database.sql
+    ##command: pg_restore -c --superuser=postgres --file=./db-container/psqldb
+    #pg_restore -d RecursosHumanos ./db-container/database.sql -e
+
+ 
+  api:
+    depends_on:
+        - db
+    build: .
+    ports: 
+        - "5000:5000"

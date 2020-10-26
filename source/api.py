@@ -5,12 +5,12 @@ from marshmallow import ValidationError, fields
 import json
 import jwt
 from functools import wraps
-import datetime
+import datetime , time
 
 app = Flask (__name__)
 
 app.config['SECRET_KEY'] = 'absolutekey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:123456789@db:5050/RecursosHumanos'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:123456789@db:5432/RecursosHumanos'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 db = SQLAlchemy(app)
@@ -54,8 +54,9 @@ while True:
     try:
         db.create_all()
         break
-    except:
-        print('Trying to Connect DB')
+    except Exception as exc:
+        print('Trying to Connect DB: ',exc)
+        time.sleep(5)
 
 
 
@@ -125,11 +126,11 @@ def create_personal(current_user):
         data['status'] = {'status':'OK', 'messege':'Done', 'action':'CREATE'}
         print(data)
 
-        return jsonify(data)
+        return make_response(jsonify(data), 201)
 
     except ValidationError as err:
         resp = jsonify({"error": err.messages,"valid_data":err.valid_data, 'action':'CREATE'})
-        return resp               
+        return make_response(resp, 400)               
 
 
 ## UPDATE Personal
@@ -152,11 +153,11 @@ def update_personal(current_user,personal_id):
         
         data['data'] = request_data
         data['status'] = {'status':'OK', 'messege':'Done','action':'UPDATE'}
-        return jsonify(data)
+        return make_response(jsonify(data), 200) 
     else:
         data['data'] = request_data
         data['status'] = {'status':'FAIL', 'messege':'Data Not Found','action':'UPDATE'}
-        return jsonify(data)
+        return make_response(jsonify(data), 400)
 
 ### DELETE Personal
 
@@ -172,11 +173,11 @@ def delete_personal(current_user,personal_id):
         
         data['data'] = personal_schema.dump(personal)
         data['status'] = {'status':'OK', 'messege':'Done', 'action':'DELETE'}
-        return jsonify(data)
+        return make_response(jsonify(data), 204)
     else:
         data['data'] = {}
         data['status'] = {'status':'FAIL', 'messege':'Data Not Found', 'action':'DELETE'}
-        return jsonify(data)
+        return make_response(jsonify(data), 400)
 
 ##GET ALL PERSONAL
 @app.route('/personal',methods=['GET'])
@@ -193,12 +194,12 @@ def get_all_personal(current_user):
         data['data'] = result
         data['status'] = {'status':'OK', 'messege':'Done'}
         
-        return jsonify(data)
+        return make_response(jsonify(data), 200)
 
     except:
         data['data'] = result
         data['status'] = {'status':'FAIL', 'messege':'Data not Found'}
-        return jsonify(data)
+        return make_response(jsonify(data), 404)
 
 ##GET PERSONAL BY ID  
 @app.route('/personal/<personal_id>',methods=['GET'])
@@ -212,16 +213,16 @@ def get_personal_by_id(current_user,personal_id):
         if result and len(result)>0:
             data['data'] = result
             data['status'] = {'status':'OK', 'messege':'Done'}
-            return jsonify(data)
+            return make_response(jsonify(data), 200)
         else:
             data['data'] = result
             data['status'] = {'status':'FAIL', 'messege':'Personal Data Not Found'}
-            return jsonify(data)
+            return make_response(jsonify(data), 404) 
 
     except:
         data['data'] = result
         data['status'] = {'status':'FAIL', 'messege':'DataBase Error'}
-        return jsonify(data)
+        return make_response(jsonify(data), 400)
 
 
 

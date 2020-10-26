@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.8'
 
 services:
 
@@ -9,9 +9,10 @@ services:
       POSTGRES_USER: postgres
       
     ports:
-        - 5050:5432
+        - 5432:5432
     volumes: 
         - ./db:/db-container
+
 
   api:
     depends_on:

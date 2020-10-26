@@ -9,23 +9,41 @@ services:
       POSTGRES_USER: postgres
       
     ports:
-        - 5432:5432
+        - 5050:5432
     volumes: 
         - ./db:/db-container
-    run:
-        
+
+  api:
+    depends_on:
+        - db
+    links:
+        - db:database
+
+    build: ./
+
+    ports: 
+        - "4000:4000"
+
+
+
+##  docker tag c96f8b6bc0d9  gcr.io/psql-python-2020/postgresgcloud:psql
+##  docker tag c96f8b6bc0d9 285814171311.dkr.ecr.us-east-2.amazonaws.com/kamnom:latest
+
+##  docker push gcr.io/psql-python-2020/postgresgcloud
+##  gcloud auth activate-service-account test-service-account@google.com --key-file=/path/key.json --project=testproject
+##  gcloud auth activate-service-account postgres@psql-293204.iam.gserviceaccount.com --key-file=C:\Users\52166\Pictures\psql-python-2020-a6fab5786649.json
+##  gcloud projects add-iam-policy-binding psql-python-2020 --member=serviceAccount:service-365502542270@containerregistry.iam.gserviceaccount.com --role=roles/containerregistry.ServiceAgent
+
+## docker login -u a6fab5786649df00d9876a078f0dbe154bc4ca33 --password-stdin https://gcr.io < C:\Users\52166\Pictures\psql-python-2020-a6fab5786649.json
+
+
+
+
+
     ##command: su postgres
     ##command: createdb postgres
     ##command: createdb RecursosHumanos
     ##command: pg_restore --superuser=postgres -d RecursosHumanos ./db-container/database.sql
     ##command: psql -U postgres -d RecursosHumanos < ./db-container/database.sql
     ##command: pg_restore -c --superuser=postgres --file=./db-container/psqldb
-    #pg_restore -d RecursosHumanos ./db-container/database.sql -e
-
- 
-  api:
-    depends_on:
-        - db
-    build: .
-    ports: 
-        - "5000:5000"
+    #pg_restore -d RecursosHumanos ./db-container/psqldb -e

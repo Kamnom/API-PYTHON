@@ -13,6 +13,10 @@ COPY . /api
 RUN pip3  install -r requirements.txt
 
 
+
 CMD ["python3","source/api.py"]
 
+
+##docker tag f64706fbd427 grc.io/enduring-hue-292820/f64706fbd427:psqldb
+##docker push gcr.io/enduring-hue-292820/f64706fbd427
 

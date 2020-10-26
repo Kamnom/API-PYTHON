@@ -10,7 +10,7 @@ import datetime
 app = Flask (__name__)
 
 app.config['SECRET_KEY'] = 'absolutekey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:123456789@db:5432/RecursosHumanos'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:123456789@db:5050/RecursosHumanos'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 db = SQLAlchemy(app)
@@ -50,7 +50,13 @@ class Usuarios(db.Model):
         self.ultimo_login = ultimo_login
         self.admin = admin
 
-db.create_all()
+while True:
+    try:
+        db.create_all()
+        break
+    except:
+        print('Trying to Connect DB')
+
 
 
 def token_check(f):
@@ -254,4 +260,4 @@ def login():
 
 ## Running App
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=4000, debug=True)
